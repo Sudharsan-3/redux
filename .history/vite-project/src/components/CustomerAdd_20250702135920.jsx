@@ -1,0 +1,18 @@
+import React, { useState } from 'react'
+
+export default function CustomerAdd() {
+  const [input,setInput] = useState("")
+  const handelClick = ()=>{
+    if 
+  }
+  return <div>
+        <h4>Add uers</h4>
+        <div>
+            <input onChange={(e)=> setInput(e.target.value) } />
+            <button onClick={handelClick}>Add</button>
+        </div>
+      
+    </div>
+  }
+
+

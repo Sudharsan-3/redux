@@ -1,0 +1,15 @@
+import React from 'react'
+
+const ToDoFilter = () => {
+  return (
+    <div>
+    <h3>
+        Filter
+    </h3>
+    <button></button><button></button><button></button>
+      
+    </div>
+  )
+}
+
+export default ToDoFilter
