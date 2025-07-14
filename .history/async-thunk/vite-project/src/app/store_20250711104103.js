@@ -1,0 +1,1 @@
+import {configerstore} from "red"
