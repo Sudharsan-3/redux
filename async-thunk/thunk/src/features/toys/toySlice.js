@@ -14,8 +14,8 @@ const toySlice = createSlice({
         loading: false,
         error: null,
         sortType: "none",
-         searchQuery: "",
-       
+        searchQuery: "",
+
     },
     reducers: {
         sortAscending: (state) => {
@@ -33,11 +33,12 @@ const toySlice = createSlice({
         },
         searchToyQuery: (state, action) => {
             const searchData = action.payload.toLowerCase();
+            state.searchQuery = action.payload
             state.toys = state.originalToys.filter((toy) =>
-              toy.title.toLowerCase().includes(searchData)
+                toy.title.toLowerCase().includes(searchData)
             );
-          }
-          
+        }
+
     },
     extraReducers: (builder) => {
         builder
@@ -46,20 +47,30 @@ const toySlice = createSlice({
             })
             .addCase(fetchToys.fulfilled, (state, action) => {
                 state.loading = false;
-                    state.originalToys = action.payload;
-
-                if (state.sortType === "asc") {
-                    state.toys = [...action.payload].sort((a, b) => a.title.localeCompare(b.title))
-                } else if (state.sortType === "desc") {
-                    state.toys = [...action.payload].sort((a, b) => b.title.localeCompare(a.title))
-                } else {
-                    state.toys = action.payload
+                state.originalToys = action.payload;
+              
+                
+                let filtered = action.payload;
+                if (state.searchQuery) {
+                  filtered = filtered.filter((toy) =>
+                    toy.title.toLowerCase().includes(state.searchQuery.toLowerCase())
+                  );
                 }
-            })
+              
+                
+                if (state.sortType === "asc") {
+                    state.toys = [...filtered].sort((a, b) => a.title.localeCompare(b.title));
+                  } else if (state.sortType === "desc") {
+                    state.toys = [...filtered].sort((a, b) => b.title.localeCompare(a.title));
+                  } else {
+                    state.toys = filtered; 
+                  }
+              })
+              
 
             .addCase(fetchToys.rejected, (state) => {
                 state.loading = false
-                    state.error = "Something went wrong"
+                state.error = "Something went wrong"
             })
 
 
@@ -67,6 +78,6 @@ const toySlice = createSlice({
     }
 })
 
-export const { sortAscending, sortDescending, clearSort,searchToyQuery} = toySlice.actions;
+export const { sortAscending, sortDescending, clearSort, searchToyQuery } = toySlice.actions;
 
 export default toySlice.reducer

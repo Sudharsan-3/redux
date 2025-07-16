@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react'
 import {useDispatch,useSelector} from "react-redux"
 import { fetchToys,sortAscending,sortDescending,clearSort,searchToyQuery } from './features/toys/toySlice'
 const App = () => {
-  const [query,setQuery] = useState("")
+  
   const dispatch = useDispatch();
-  const {toys,loading,error,sortType}= useSelector((state)=>state.toys)
+  const {toys,loading,error,sortType,searchQuery}= useSelector((state)=>state.toys)
     
   const handelChange = (e)=>{
-    const values = e.target.value
-    setQuery(values)
-    dispatch(searchToyQuery(values))
+    const value = e.target.value
+    dispatch(searchToyQuery(value))
 
   }
 
@@ -33,7 +32,13 @@ const App = () => {
         <button onClick={()=>dispatch(clearSort())} >Clear</button>
       </div>
       <div>
-        <input value={query} onChange={handelChange } type="text" />
+        <input value={searchQuery} onChange={handelChange } type="text" />
+        <div>{
+          searchQuery?<button onClick={()=>dispatch(searchToyQuery(""))}>Clear</button>:""
+          }
+          
+        </div>
+        
       </div>
       <ul>
         {toys.map((toy)=>{
